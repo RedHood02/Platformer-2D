@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float playerSpeed, playerJumpForce;
     float x, y;
-    [SerializeField] bool isGrounded, isMoving, nearLadder, isClimbingLadder;
+    [SerializeField] bool isGrounded, isMoving, nearLadder, isClimbingLadder, canPlayerMove;
     [SerializeField] Rigidbody2D playerRB;
 
     [SerializeField] LayerMask whatIsGround;
@@ -15,11 +15,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        GetAxis();
-        PlayerMove();
-        PlayerJump();
-        PlayerClimb();
-        ControlFlip();
+        if(canPlayerMove)
+        {
+            GetAxis();
+            PlayerMove();
+            PlayerJump();
+            PlayerClimb();
+            ControlFlip();
+            DeactivateRB();
+        }
     }
 
     private void FixedUpdate()
@@ -53,7 +57,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            playerRB.isKinematic = false;
             playerRB.AddRelativeForce(transform.up * playerJumpForce, ForceMode2D.Impulse);
             isGrounded = false;
         }
@@ -86,15 +89,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void DeactivateRB()
+    {
+        if(nearLadder)
+        {
+            playerRB.isKinematic = true;
+        }
+        else
+        {
+            playerRB.isKinematic = false;
+        }
+    }
+
     void RaycastGround()
     {
         if (Physics2D.Raycast(transform.position, -transform.up, 1f, whatIsGround))
         {
             isGrounded = true;
-            if(playerRB.isKinematic)
-            {
-                playerRB.isKinematic = false;
-            }
         }
         else
         {
@@ -113,6 +124,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.layer == 8)
         {
             nearLadder = true;
+            playerRB.velocity = Vector2.zero;
         }
     }
 
@@ -133,8 +145,23 @@ public class PlayerMovement : MonoBehaviour
         return isGrounded;
     }
 
-    public bool IsClimbingLadder()
+    public bool GetIsClimbing()
     {
         return isClimbingLadder;
+    }
+
+    public bool GetIsNearLadder()
+    {
+        return nearLadder;
+    }
+
+    public void SetCanPlayerMove(bool newBool)
+    {
+        canPlayerMove = newBool;
+    }
+
+    public bool GetCanPlayerMove()
+    {
+        return canPlayerMove;
     }
 }

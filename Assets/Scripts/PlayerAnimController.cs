@@ -10,13 +10,18 @@ public class PlayerAnimController : MonoBehaviour
     private void Update()
     {
         ControlAnimations();
+        ControlSpeed();
     }
 
     void ControlSpeed()
     {
-        if (playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Ladder") && Input.GetAxisRaw("Horizontal") != 1)
+        if (Input.GetAxisRaw("Vertical") == 0 && playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Ladder"))
         {
             playerAnim.speed = 0;
+            if(!playerAnim.GetBool("IsNearLadder"))
+            {
+                playerAnim.speed = 1;
+            }
         }
         else
         {
@@ -28,6 +33,8 @@ public class PlayerAnimController : MonoBehaviour
     {
         playerAnim.SetBool("IsMoving", playerMov.GetIsMoving());
         playerAnim.SetBool("IsGrounded", playerMov.GetIsGrounded());
+        playerAnim.SetBool("IsNearLadder", playerMov.GetIsNearLadder());
+        playerAnim.SetBool("IsClimbingLadder", playerMov.GetIsClimbing());
     }
 
 }
