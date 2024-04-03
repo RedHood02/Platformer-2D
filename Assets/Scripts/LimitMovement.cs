@@ -23,14 +23,13 @@ public class LimitMovement : MonoBehaviour
 
     private void Update()
     {
-        if(playerMov.GetCanPlayerMove() == true)
+        if (playerMov.GetCanPlayerMove() == true)
         {
             ReduceLimit();
             UpdateTMP();
-
-            if(currentStrokesLeft == 0 && currentJumpsLeft == 0)
+            if (currentStrokesLeft <= 0 && currentJumpsLeft <= 0)
             {
-                StartCoroutine(PlayerLoss());
+                StartCoroutine(GracePeriod());
             }
         }
     }
@@ -65,18 +64,30 @@ public class LimitMovement : MonoBehaviour
         }
     }
 
-    void UpdateTMP()
+    float ClampJumps()
     {
-        jumpText.text = currentJumpsLeft.ToString("0");
-        walkText.text = currentStrokesLeft.ToString("0");
+        float jumpsLeftClamp = Mathf.Clamp(currentJumpsLeft, 0, maxJumps);
+        return jumpsLeftClamp;
     }
 
-    IEnumerator PlayerLoss()
+    float ClampStrokes()
     {
-        playerMov.SetCanPlayerMove(false);
+        float moveStrokesLeftClamp = Mathf.Clamp(currentStrokesLeft, 0, maxMovementStrokes);
+        return moveStrokesLeftClamp;
+    }
+
+    void UpdateTMP()
+    {
+        jumpText.text = ClampJumps().ToString("0");
+        walkText.text = ClampStrokes().ToString("0");
+    }
+
+    IEnumerator GracePeriod()
+    {
         //play death animation
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.25f);
         //Replace death scene for relocating player
+        playerMov.SetCanPlayerMove(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         yield break;
     }
