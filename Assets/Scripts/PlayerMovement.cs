@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool isGrounded, isMoving, nearLadder, isClimbingLadder, canPlayerMove;
     [SerializeField] Rigidbody2D playerRB;
 
-    [SerializeField] LayerMask whatIsGround;
+    [SerializeField] LayerMask whatIsGround, whatIsWater;
 
     [SerializeField] SpriteRenderer playerSprite;
 
@@ -110,6 +110,11 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             isGrounded = false;
+        }
+
+        if (Physics2D.Raycast(transform.position, -transform.up, 0.51f, whatIsWater))
+        {
+            Destroy(gameObject);
         }
     }
 
