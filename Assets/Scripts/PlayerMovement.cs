@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,14 +9,33 @@ public class PlayerMovement : MonoBehaviour
     float x, y;
     [SerializeField] bool isGrounded, isMoving, nearLadder, isClimbingLadder, canPlayerMove;
     [SerializeField] Rigidbody2D playerRB;
+    [SerializeField] BoxCollider2D playerBoxCollider;
 
     [SerializeField] LayerMask whatIsGround, whatIsWater;
 
     [SerializeField] SpriteRenderer playerSprite;
 
+    [SerializeField] PlayerAnimController animController;
+    [SerializeField] LimitMovement limitMovement;
+
+    Vector3 playerSpawn;
+
+    private void Awake()
+    {
+        playerBoxCollider = GetComponent<BoxCollider2D>();
+        animController = GetComponent<PlayerAnimController>();
+        limitMovement = FindObjectOfType<LimitMovement>();
+    }
+
+
+    private void OnEnable()
+    {
+        playerSpawn = transform.position;
+    }
+
     private void Update()
     {
-        if(canPlayerMove)
+        if (canPlayerMove)
         {
             GetAxis();
             PlayerMove();
@@ -55,8 +75,9 @@ public class PlayerMovement : MonoBehaviour
 
     void PlayerJump()
     {
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space) && limitMovement.JumpsLeft() > 0)
         {
+            limitMovement.ReduceJumps();
             playerRB.AddRelativeForce(transform.up * playerJumpForce, ForceMode2D.Impulse);
             isGrounded = false;
         }
@@ -91,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
 
     void DeactivateRB()
     {
-        if(nearLadder)
+        if (nearLadder)
         {
             playerRB.isKinematic = true;
         }
@@ -116,6 +137,54 @@ public class PlayerMovement : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public IEnumerator PlayerDeath()
+    {
+        Debug.Log("Running");
+        //play death animation
+        canPlayerMove = false;
+        yield return new WaitForSeconds(1.25f);
+        //Replace death scene for relocating player
+        transform.position = playerSpawn;
+        animController.ResetAnimation();
+        limitMovement.ResetNumbers();
+        ResetBools();
+        ResetFlip();
+        yield break;
+    }
+
+    public IEnumerator DrowningDeath()
+    {
+        Debug.Log("Running");
+        canPlayerMove = false;
+        animController.IsDrowing(true);
+        transform.position = new Vector2(transform.position.x, transform.position.y - 0.6f);
+        playerBoxCollider.enabled = false;
+        yield return new WaitForSeconds(1.5f);
+        playerBoxCollider.enabled = true;
+        transform.position = playerSpawn;
+        limitMovement.ResetNumbers();
+        animController.ResetAnimation();
+        ResetBools();
+        ResetFlip();
+        yield break;
+
+    }
+
+    void ResetFlip()
+    {
+        playerSprite.flipX = false;
+    }
+
+    void ResetBools()
+    {
+        animController.IsDrowing(false);
+        isGrounded = true;
+        isMoving = false;
+        nearLadder = false;
+        isClimbingLadder = false;
+        canPlayerMove = true;
     }
 
     private void OnDrawGizmos()

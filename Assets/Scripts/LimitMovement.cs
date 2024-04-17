@@ -26,11 +26,11 @@ public class LimitMovement : MonoBehaviour
         if (playerMov.GetCanPlayerMove() == true)
         {
             ReduceLimit();
-            UpdateTMP();
-            if (currentStrokesLeft <= 0 && currentJumpsLeft <= 0)
-            {
-                StartCoroutine(GracePeriod());
-            }
+            UpdateTMP();   
+        }
+        if (currentStrokesLeft <= 0 && currentJumpsLeft <= 0)
+        {
+            StartCoroutine(playerMov.PlayerDeath());
         }
     }
 
@@ -56,12 +56,11 @@ public class LimitMovement : MonoBehaviour
         {
             currentStrokesLeft--;
         }
+    }
 
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            currentJumpsLeft--;
-        }
+    public void ReduceJumps()
+    {
+        currentJumpsLeft--;
     }
 
     float ClampJumps()
@@ -76,19 +75,20 @@ public class LimitMovement : MonoBehaviour
         return moveStrokesLeftClamp;
     }
 
+    public float JumpsLeft()
+    {
+        return currentJumpsLeft;
+    }
+
     void UpdateTMP()
     {
         jumpText.text = ClampJumps().ToString("0");
         walkText.text = ClampStrokes().ToString("0");
     }
 
-    IEnumerator GracePeriod()
+    public void ResetNumbers()
     {
-        //play death animation
-        yield return new WaitForSeconds(1.25f);
-        //Replace death scene for relocating player
-        playerMov.SetCanPlayerMove(false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        yield break;
+        currentJumpsLeft = maxJumps;
+        currentStrokesLeft = maxMovementStrokes;
     }
 }

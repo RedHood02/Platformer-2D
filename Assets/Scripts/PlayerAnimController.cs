@@ -13,6 +13,11 @@ public class PlayerAnimController : MonoBehaviour
         ControlSpeed();
     }
 
+    public void IsDrowing(bool isDrowning)
+    {
+        playerAnim.SetBool("IsDrowning", isDrowning);
+    }
+
     void ControlSpeed()
     {
         if (Input.GetAxisRaw("Vertical") == 0 && playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Ladder"))
@@ -37,4 +42,11 @@ public class PlayerAnimController : MonoBehaviour
         playerAnim.SetBool("IsClimbingLadder", playerMov.GetIsClimbing());
     }
 
+    public void ResetAnimation()
+    {
+        playerAnim.SetBool("IsMoving", false);
+        playerAnim.SetBool("IsGrounded", false);
+        playerAnim.SetBool("IsNearLadder", false);
+        playerAnim.SetBool("IsClimbingLadder", false);
+    }
 }
