@@ -16,4 +16,9 @@ public class PlayerKey : MonoBehaviour
     {
         return hasKey;
     }
+
+    public void ResetKey()
+    {
+        FindObjectOfType<Key>().ResetPos();
+    }
 }

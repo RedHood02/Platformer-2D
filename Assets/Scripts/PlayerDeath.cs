@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerDeath : MonoBehaviour
 {
     [SerializeField] PlayerMovement playerMov;
+    
     private void Awake()
     {
         playerMov = GetComponent<PlayerMovement>();

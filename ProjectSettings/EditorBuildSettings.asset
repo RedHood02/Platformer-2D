@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Tutorial World 1.unity
     guid: fe5cafd051e906f43b1d938b2460525b
   - enabled: 1
+    path: Assets/Scenes/Tutorial World 2.unity
+    guid: 9f33ff350c87f4a488dc9bb01737ee74
+  - enabled: 1
     path: Assets/Scenes/World 1.unity
     guid: 14f68d9db6f829047a9cf598896dabaa
   - enabled: 1

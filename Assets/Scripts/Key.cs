@@ -10,6 +10,13 @@ public class Key : MonoBehaviour
     [SerializeField] bool isPickedUp;
     [SerializeField] float speed;
 
+    Vector3 startPos;
+
+    private void Awake()
+    {
+        startPos = transform.position;
+    }
+
     private void Update()
     {
         PickUp();
@@ -32,6 +39,13 @@ public class Key : MonoBehaviour
             collision.gameObject.GetComponent<PlayerKey>().SetHasKey(true);
             isPickedUp = true;
         }
+    }
+
+    public void ResetPos()
+    {
+        FindObjectOfType<PlayerKey>().SetHasKey(false);
+        isPickedUp = false;
+        transform.position = startPos;
     }
 
     public bool GetIsPickedUp()

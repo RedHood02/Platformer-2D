@@ -18,10 +18,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] PlayerAnimController animController;
     [SerializeField] LimitMovement limitMovement;
 
+    [SerializeField] PlayerKey playerKey;
+
     Vector3 playerSpawn;
 
     private void Awake()
     {
+        playerKey = GetComponent<PlayerKey>();
         playerBoxCollider = GetComponent<BoxCollider2D>();
         animController = GetComponent<PlayerAnimController>();
         limitMovement = FindObjectOfType<LimitMovement>();
@@ -145,6 +148,10 @@ public class PlayerMovement : MonoBehaviour
         //play death animation
         canPlayerMove = false;
         yield return new WaitForSeconds(1.25f);
+        if (GetComponent<PlayerWin>().GetIsKeyLevel() == true)
+        {
+            playerKey.ResetKey();
+        }
         //Replace death scene for relocating player
         transform.position = playerSpawn;
         animController.ResetAnimation();
@@ -159,8 +166,11 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Running");
         canPlayerMove = false;
         animController.IsDrowing(true);
-        transform.position = new Vector2(transform.position.x, transform.position.y - 0.6f);
         playerBoxCollider.enabled = false;
+        if (FindObjectOfType<PlayerWin>().GetIsKeyLevel() == true)
+        {
+            playerKey.ResetKey();
+        }
         yield return new WaitForSeconds(1.5f);
         playerBoxCollider.enabled = true;
         transform.position = playerSpawn;
