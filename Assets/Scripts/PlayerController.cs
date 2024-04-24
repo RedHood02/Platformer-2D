@@ -98,6 +98,11 @@ public class PlayerController : MonoBehaviour
         return isDrowning;
     }
 
+    public void ResetDrowning()
+    {
+        isDrowning = false;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

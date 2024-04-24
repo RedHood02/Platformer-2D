@@ -43,7 +43,7 @@ AnimationClip:
       value: {fileID: 729111417, guid: 6d96b7c71e5a6db47930819cb8e2288e, type: 3}
     - time: 1
       value: {fileID: -1148977574, guid: 6d96b7c71e5a6db47930819cb8e2288e, type: 3}
-    - time: 2.0666666
+    - time: 2.0833333
       value: {fileID: -1148977574, guid: 6d96b7c71e5a6db47930819cb8e2288e, type: 3}
     attribute: m_Sprite
     path: PlayerSprite
@@ -82,7 +82,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 2.0833333
+    m_StopTime: 2.1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -101,4 +101,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 1
+    functionName: ResetDrowning
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
