@@ -7,8 +7,8 @@ public class LimitMovement : MonoBehaviour
 {
     [SerializeField] PlayerController _playerController;
 
-    [SerializeField] float currentKeyStrokesLeft, maxKeyStrokes;
-    [SerializeField] float currentJumpsLeft, maxJumps;
+    public float currentKeyStrokesLeft, maxKeyStrokes;
+    public float currentJumpsLeft, maxJumps;
     [SerializeField] TMP_Text jumpText, walkText;
 
     private void Awake()
@@ -54,6 +54,12 @@ public class LimitMovement : MonoBehaviour
         {
             currentJumpsLeft--;
         }
+    }
+
+    public void ResetNumbers()
+    {
+        currentKeyStrokesLeft = maxKeyStrokes;
+        currentJumpsLeft = maxJumps;
     }
 
     public bool CanJump()

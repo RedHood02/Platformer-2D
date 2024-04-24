@@ -2287,6 +2287,9 @@ MonoBehaviour:
   playerPos: {x: 0, y: 0}
   keyPos: {x: 0, y: 0}
   controller: {fileID: 0}
+  limitMovement: {fileID: 0}
+  keyController: {fileID: 0}
+  endDoorController: {fileID: 0}
 --- !u!4 &737655030
 Transform:
   m_ObjectHideFlags: 0
@@ -2427,6 +2430,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blackOutAnimator: {fileID: 0}
+  isKeyLevel: 0
+  playerHasKey: 0
 --- !u!1001 &795927289
 PrefabInstance:
   m_ObjectHideFlags: 0

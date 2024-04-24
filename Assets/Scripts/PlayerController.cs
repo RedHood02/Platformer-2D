@@ -5,12 +5,12 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 200;
+    public float speed = 200, climbSpeed;
     public float jumpForce = 10;
     Vector3 move;
     Rigidbody2D rb;
 
-    public LayerMask groundLayer;
+    public LayerMask groundLayer, ladderExit;
     public Vector2 groundCheckerBoxSize;
     public float groundCheckerCastDistance;
     float x, y;
@@ -18,6 +18,11 @@ public class PlayerController : MonoBehaviour
     public bool lastKeyStroke = false;
     public LimitMovement limitMovement;
     public bool isDrowning;
+
+    public bool HasKey;
+
+    public bool isLadder;
+    public bool isClimbing;
 
     // Start is called before the first frame update
     void Start()
@@ -31,14 +36,34 @@ public class PlayerController : MonoBehaviour
     {
         MovePlayer();
         Jump();
+        Death();
+
+        if (isLadder && Mathf.Abs(PlayerMovementVector().y) > 0f)
+        {
+            isClimbing = true;
+        }
     }
 
+    void Death()
+    {
+        if(limitMovement.currentKeyStrokesLeft == 0 && limitMovement.currentJumpsLeft == 0)
+        {
+            GameManager._instance.PlayerDeath();
+        }
+    }
 
     void MovePlayer()
     {
         x = Input.GetAxisRaw("Horizontal");
         y = Input.GetAxisRaw("Vertical");
-        move = new Vector3(x, 0);
+        if (!isLadder)
+        {
+            move = new Vector3(x, 0);
+        }
+        else
+        {
+            move = new Vector3(x, y);
+        }
         if (!lastKeyStroke)
         {
             transform.position += speed * Time.deltaTime * move;
@@ -69,6 +94,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics2D.BoxCast(transform.position, groundCheckerBoxSize, 0, -transform.up, groundCheckerCastDistance, groundLayer))
         {
+            Debug.Log("Grounded");
             return true;
         }
         else
@@ -77,6 +103,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (isClimbing)
+        {
+            rb.gravityScale = 0f;
+            rb.velocity = new Vector2(rb.velocity.x, move.y * climbSpeed);
+        }
+        else
+        {
+            rb.gravityScale = 1f;
+        }
+    }
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Water"))
@@ -92,6 +131,30 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(1.25f);
         GameManager._instance.PlayerDeath();
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Ladder"))
+        {
+            isLadder = true;
+        }
+
+        if (collision.CompareTag("Key"))
+        {
+            GameManager._instance.SetPlayerHasKey(true);
+            collision.GetComponent<Key>().isPickedUp = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Ladder"))
+        {
+            isLadder = false;
+            isClimbing = false;
+        }
+    }
+
 
     public bool GetIsDrowning()
     {

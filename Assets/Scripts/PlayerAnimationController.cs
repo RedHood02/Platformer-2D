@@ -17,6 +17,7 @@ public class PlayerAnimationController : MonoBehaviour
     private void Update()
     {
         ControlAnims();
+        ControlLadder();
     }
 
     void ControlAnims()
@@ -24,6 +25,25 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("IsGrounded", _playerController.IsGrounded());
         anim.SetBool("IsMoving", _playerController.IsMoving());
         anim.SetBool("IsDrowning", _playerController.GetIsDrowning());
+        anim.SetBool("InLadder", _playerController.isLadder);
+    }
+
+
+    void ControlLadder()
+    {
+        if (anim.GetBool("InLadder") && !_playerController.isClimbing)
+        {
+            anim.speed = 0;
+        }
+        else if(anim.GetBool("InLadder") && _playerController.isClimbing)
+        {
+            anim.speed = 1;
+        }
+
+        else
+        {
+            anim.speed = 1;
+        }
     }
 
     public void ResetBool()
@@ -31,5 +51,6 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("IsGrounded", true);
         anim.SetBool("IsMoving", false);
         anim.SetBool("IsDrowning", false);
+        anim.SetBool("InLadder", false);
     }
 }

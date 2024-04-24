@@ -7,6 +7,9 @@ TagManager:
   - Key
   - Water
   - BlackOut
+  - LadderExit
+  - Ladder
+  - PlayerKeySpot
   layers:
   - Default
   - TransparentFX
