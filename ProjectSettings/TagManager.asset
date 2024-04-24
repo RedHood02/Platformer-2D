@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Key
   - Water
+  - BlackOut
   layers:
   - Default
   - TransparentFX

@@ -258,11 +258,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 451547}
   m_CullTransparentMesh: 1
---- !u!95 &2822546 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5374746009836158289, guid: f6a7e529429e08a418cf55e1d5c061bb, type: 3}
-  m_PrefabInstance: {fileID: 5374746009833336003}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &21029221
 GameObject:
   m_ObjectHideFlags: 0
@@ -2103,7 +2098,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 619394802}
-  - component: {fileID: 619394801}
   m_Layer: 0
   m_Name: Global Light 2D
   m_TagString: Untagged
@@ -2111,18 +2105,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &619394801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 619394800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &619394802
 Transform:
   m_ObjectHideFlags: 0
@@ -2273,6 +2255,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 654209906}
   m_CullTransparentMesh: 1
+--- !u!1 &737655028
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 737655030}
+  - component: {fileID: 737655029}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &737655029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737655028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bff45596a3e96b94b900d785f682ae7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPos: {x: 0, y: 0}
+  keyPos: {x: 0, y: 0}
+  controller: {fileID: 0}
+--- !u!4 &737655030
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737655028}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.00216, y: 1.8118124, z: -0.14507203}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &748942303
 GameObject:
   m_ObjectHideFlags: 0
@@ -2394,14 +2423,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 748942303}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40ec592edc743544d9ae9a0c8e44f7bd, type: 3}
+  m_Script: {fileID: 11500000, guid: a5a1e0629c79bdd408f46d3b28e9bcd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isKeyLevel: 0
-  doorRender: {fileID: 0}
-  closedRender: {fileID: 0}
-  openRender: {fileID: 0}
-  blackOutImage: {fileID: 2822546}
+  blackOutAnimator: {fileID: 0}
 --- !u!1001 &795927289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3558,6 +3583,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1061572811, guid: edbbcd1e98f7d8446a2d695f97817cc9, type: 3}
+      propertyPath: jumpText
+      value: 
+      objectReference: {fileID: 451549}
+    - target: {fileID: 1061572811, guid: edbbcd1e98f7d8446a2d695f97817cc9, type: 3}
+      propertyPath: walkText
+      value: 
+      objectReference: {fileID: 157045410}
     - target: {fileID: 1481311739985622105, guid: edbbcd1e98f7d8446a2d695f97817cc9, type: 3}
       propertyPath: m_RootOrder
       value: 2
