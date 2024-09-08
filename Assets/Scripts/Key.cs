@@ -4,30 +4,33 @@ using UnityEngine;
 
 public class Key : MonoBehaviour
 {
-    [SerializeField] Transform playerKeySpot;
-    [SerializeField] Vector2 keySpawnPos;
+    [SerializeField] private Transform _playerKeySpot;
+    [SerializeField] private Vector2 _keyStartPos;
+    [SerializeField] private float _moveSpeed;
 
-    public bool isPickedUp;
-    [SerializeField] float moveSpeed;
 
     private void Awake()
     {
-        keySpawnPos = transform.position;
-        playerKeySpot = GameObject.FindGameObjectWithTag("PlayerKeySpot").transform;
+        _keyStartPos = transform.position;
+        _playerKeySpot = GameObject.FindGameObjectWithTag("PlayerKeySpot").transform;
     }
-
 
     private void Update()
     {
-        if(isPickedUp)
+        if (GameplayManager.Instance.m_isPlayerHasKey)
         {
-           transform.position = Vector2.MoveTowards(transform.position, playerKeySpot.position, moveSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, _playerKeySpot.position, _moveSpeed * Time.deltaTime);
+        }
+
+        if (GameplayManager.Instance.m_isGameOver)
+        {
+            ResetKey();
         }
     }
 
     public void ResetKey()
     {
-        isPickedUp = false;
-        transform.position = keySpawnPos;
+        GameplayManager.Instance.m_isPlayerHasKey = false;
+        transform.position = _keyStartPos;
     }
 }

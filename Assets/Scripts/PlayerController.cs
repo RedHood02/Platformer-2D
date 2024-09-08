@@ -1,148 +1,84 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 200, climbSpeed;
-    public float jumpForce = 10;
-    Vector3 move;
-    Rigidbody2D rb;
+    [Header("General")]
+    [SerializeField] private Vector2 _playerStartPos;
 
-    public LayerMask groundLayer, ladderExit;
-    public Vector2 groundCheckerBoxSize;
-    public float groundCheckerCastDistance;
-    float x, y;
+    [Header("Ladder")]
+    public bool m_isLadder;
+    public bool m_isClimbing;
 
-    public bool lastKeyStroke = false;
-    public LimitMovement limitMovement;
-    public bool isDrowning;
+    [Header("Animation")]
+    [SerializeField] private Animator _anim;
+    public bool m_isDrowning = false;
 
-    public bool HasKey;
 
-    public bool isLadder;
-    public bool isClimbing;
-
-    // Start is called before the first frame update
     void Start()
     {
-        limitMovement = GetComponent<LimitMovement>();
-        rb = GetComponent<Rigidbody2D>();
+        _playerStartPos = gameObject.transform.position;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        MovePlayer();
-        Jump();
-        Death();
+        if (GameplayManager.Instance.m_isGameOver) Death();
+        _anim.SetBool("IsGrounded", GetComponent<PlayerMovement>().IsGrounded());
+        _anim.SetBool("IsMoving", GetComponent<PlayerMovement>().m_isMoving);
+        _anim.SetBool("IsDrowning", m_isDrowning);
+        _anim.SetBool("InLadder", m_isLadder);
 
-        if (isLadder && Mathf.Abs(PlayerMovementVector().y) > 0f)
+        if (_anim.GetBool("InLadder") && !m_isClimbing)
         {
-            isClimbing = true;
+            _anim.speed = 0;
         }
+        else if (_anim.GetBool("InLadder") && m_isClimbing)
+        {
+            _anim.speed = 1;
+        }
+        else
+        {
+            _anim.speed = 1;
+        }
+
     }
 
     void Death()
     {
-        if(limitMovement.currentKeyStrokesLeft == 0 && limitMovement.currentJumpsLeft == 0)
-        {
-            GameManager._instance.PlayerDeath();
-        }
+        GetComponent<Collider2D>().enabled = true;
+        transform.position = _playerStartPos;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
-    void MovePlayer()
-    {
-        x = Input.GetAxisRaw("Horizontal");
-        y = Input.GetAxisRaw("Vertical");
-        if (!isLadder)
-        {
-            move = new Vector3(x, 0);
-        }
-        else
-        {
-            move = new Vector3(x, y);
-        }
-        if (!lastKeyStroke)
-        {
-            transform.position += speed * Time.deltaTime * move;
-        }
-    }
-
-    public Vector2 PlayerMovementVector()
-    {
-        return new Vector2(x, y);
-    }
-
-    public bool IsMoving()
-    {
-        return x != 0 && !lastKeyStroke;
-    }
-
-    void Jump()
-    {
-        if (!limitMovement.CanJump()) return;
-
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
-        {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
-        }
-    }
-
-    public bool IsGrounded()
-    {
-        if (Physics2D.BoxCast(transform.position, groundCheckerBoxSize, 0, -transform.up, groundCheckerCastDistance, groundLayer))
-        {
-            Debug.Log("Grounded");
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (isClimbing)
-        {
-            rb.gravityScale = 0f;
-            rb.velocity = new Vector2(rb.velocity.x, move.y * climbSpeed);
-        }
-        else
-        {
-            rb.gravityScale = 1f;
-        }
-    }
-    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Water"))
         {
-            isDrowning = true;
             StartCoroutine(PlayerDrownDeath());
         }
     }
 
     IEnumerator PlayerDrownDeath()
     {
+        m_isDrowning = true;
         GetComponent<BoxCollider2D>().enabled = false;
         yield return new WaitForSeconds(1.25f);
-        GameManager._instance.PlayerDeath();
+        Death();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Ladder"))
         {
-            isLadder = true;
+            m_isLadder = true;
         }
 
         if (collision.CompareTag("Key"))
         {
-            GameManager._instance.SetPlayerHasKey(true);
-            collision.GetComponent<Key>().isPickedUp = true;
+            GameplayManager.Instance.m_isPlayerHasKey = true;
         }
     }
 
@@ -150,25 +86,8 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("Ladder"))
         {
-            isLadder = false;
-            isClimbing = false;
+            m_isLadder = false;
+            m_isClimbing = false;
         }
-    }
-
-
-    public bool GetIsDrowning()
-    {
-        return isDrowning;
-    }
-
-    public void ResetDrowning()
-    {
-        isDrowning = false;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position - transform.up * groundCheckerCastDistance, groundCheckerBoxSize);
     }
 }

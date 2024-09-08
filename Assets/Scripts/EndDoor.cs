@@ -4,30 +4,37 @@ using UnityEngine;
 
 public class EndDoor : MonoBehaviour
 {
-    [SerializeField] Animator blackOutAnimator;
-    [SerializeField] bool isKeyLevel, playerHasKey;
+    [Header("Sprites")]
+    [SerializeField] private Sprite _doorOpen;
+    [SerializeField] private Sprite _doorClose;
+    private SpriteRenderer _sr;
+
+    [Header("Finish Level")]
+    [SerializeField] private Animator _blackOutAnimator;
+
+
     private void Awake()
     {
-        blackOutAnimator = GameObject.FindGameObjectWithTag("BlackOut").GetComponent<Animator>();
+        _blackOutAnimator = GameObject.FindGameObjectWithTag("BlackOut").GetComponent<Animator>();
+        _sr = GetComponent<SpriteRenderer>();
+    }
+
+    private void Start()
+    {
+        if (GameplayManager.Instance.m_isLevelKey)
+        {
+            _sr.sprite = _doorClose;
+        }
+        else
+        {
+            _sr.sprite = _doorOpen;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isKeyLevel && !playerHasKey) return;
+        if (GameplayManager.Instance.m_isLevelKey && !GameplayManager.Instance.m_isPlayerHasKey) return;
 
-        if(collision.gameObject.CompareTag("Player"))
-        {
-            blackOutAnimator.Play("FadeIn");
-        }
-    }
-
-    public void SetPlayerHasKey(bool newBool)
-    {
-        playerHasKey = newBool;
-    }
-
-    public bool GetIsKeyLevel()
-    {
-        return isKeyLevel;
+        if (collision.gameObject.CompareTag("Player")) _blackOutAnimator.Play("FadeIn");
     }
 }
