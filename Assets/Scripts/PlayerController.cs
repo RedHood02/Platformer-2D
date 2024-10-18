@@ -13,6 +13,10 @@ public class PlayerController : MonoBehaviour
     public bool m_isLadder;
     public bool m_isClimbing;
 
+    [Header("Key")]
+    public bool m_isLevelKey;
+    public bool m_isPlayerHasKey;
+
     [Header("Animation")]
     [SerializeField] private Animator _anim;
     public bool m_isDrowning = false;
@@ -25,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (GameplayManager.Instance.m_isGameOver) Death();
+        //if (GameplayManager.Instance.m_isGameOver) Death();
         _anim.SetBool("IsGrounded", GetComponent<PlayerMovement>().IsGrounded());
         _anim.SetBool("IsMoving", GetComponent<PlayerMovement>().m_isMoving);
         _anim.SetBool("IsDrowning", m_isDrowning);
@@ -78,7 +82,7 @@ public class PlayerController : MonoBehaviour
 
         if (collision.CompareTag("Key"))
         {
-            GameplayManager.Instance.m_isPlayerHasKey = true;
+            m_isPlayerHasKey = true;
         }
     }
 

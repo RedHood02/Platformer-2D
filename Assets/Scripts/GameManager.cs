@@ -2,35 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    public static GameManager Instance { get; private set; }
-    public static string s_currentState;
-    public static event System.Action<string> e_OnState;
+    //Events
+    public static event System.Action<GameState> OnStateChange;
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Debug.LogError("ERROR: There's more than one GameManager");
-        }
+    //Variables
+    [Header("Settings")]
+    [SerializeField] private GameState _initialState;
 
-    }
+    //Properties
+    public static GameState s_currentState { get; private set; } = (GameState)(-1);
+    protected override bool Persistent => false;
+
 
     void Start()
     {
-        s_currentState = "Gameplay";
-        SwitchState(s_currentState);
+        SwitchState(_initialState);
     }
 
 
-    public void SwitchState(string state)
+    public static void SwitchState(GameState state)
     {
+        if (s_currentState == state) return;
+
         s_currentState = state;
-        e_OnState?.Invoke(s_currentState);
+        OnStateChange?.Invoke(s_currentState);
     }
 }
+
+public enum GameState { Menu, Gameplay, GameOver }

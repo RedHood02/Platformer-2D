@@ -21,20 +21,20 @@ public class EndDoor : MonoBehaviour
 
     private void Start()
     {
-        if (GameplayManager.Instance.m_isLevelKey)
-        {
-            _sr.sprite = _doorClose;
-        }
-        else
-        {
-            _sr.sprite = _doorOpen;
-        }
+        // if (GameplayManager.Instance.m_isLevelKey)
+        // {
+        //     _sr.sprite = _doorClose;
+        // }
+        // else
+        // {
+        //     _sr.sprite = _doorOpen;
+        // }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (GameplayManager.Instance.m_isLevelKey && !GameplayManager.Instance.m_isPlayerHasKey) return;
+    // private void OnTriggerEnter2D(Collider2D collision)
+    // {
+    //     if (GameplayManager.Instance.m_isLevelKey && !GameplayManager.Instance.m_isPlayerHasKey) return;
 
-        if (collision.gameObject.CompareTag("Player")) _blackOutAnimator.Play("FadeIn");
-    }
+    //     if (collision.gameObject.CompareTag("Player")) _blackOutAnimator.Play("FadeIn");
+    // }
 }

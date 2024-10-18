@@ -17,20 +17,20 @@ public class Key : MonoBehaviour
 
     private void Update()
     {
-        if (GameplayManager.Instance.m_isPlayerHasKey)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, _playerKeySpot.position, _moveSpeed * Time.deltaTime);
-        }
+        // if (GameplayManager.Instance.m_isPlayerHasKey)
+        // {
+        //     transform.position = Vector2.MoveTowards(transform.position, _playerKeySpot.position, _moveSpeed * Time.deltaTime);
+        // }
 
-        if (GameplayManager.Instance.m_isGameOver)
-        {
-            ResetKey();
-        }
+        // if (GameplayManager.Instance.m_isGameOver)
+        // {
+        //     ResetKey();
+        // }
     }
 
-    public void ResetKey()
-    {
-        GameplayManager.Instance.m_isPlayerHasKey = false;
-        transform.position = _keyStartPos;
-    }
+    // public void ResetKey()
+    // {
+    //     GameplayManager.Instance.m_isPlayerHasKey = false;
+    //     transform.position = _keyStartPos;
+    // }
 }

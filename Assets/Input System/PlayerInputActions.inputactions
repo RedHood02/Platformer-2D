@@ -6,9 +6,18 @@
             "id": "71642eb1-3981-414f-9725-5705014b93c6",
             "actions": [
                 {
-                    "name": "Move",
+                    "name": "GroundMove",
                     "type": "Value",
                     "id": "aeeb5f2e-13d7-4875-a2b3-6c9864b7f379",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "LadderMove",
+                    "type": "Value",
+                    "id": "165b76ce-c2aa-4ced-8874-00e628d838fb",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -32,31 +41,9 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "GroundMove",
                     "isComposite": true,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "c3b2da6f-69e9-4781-8ff8-ef6c31897e8b",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Pc",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "edf66c7d-05bb-448b-b33e-40bc1b228ed7",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Pc",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "left",
@@ -65,7 +52,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Pc",
-                    "action": "Move",
+                    "action": "GroundMove",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -76,7 +63,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Pc",
-                    "action": "Move",
+                    "action": "GroundMove",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -90,6 +77,39 @@
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "04409f8b-4289-4f44-a891-cfbc75752ab0",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LadderMove",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "bb2adca3-d15a-4be5-84b6-fe6545550e0c",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Pc",
+                    "action": "LadderMove",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "59ad0333-6306-429b-81a9-445d36d7b0e9",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Pc",
+                    "action": "LadderMove",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

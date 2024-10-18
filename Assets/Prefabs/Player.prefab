@@ -74,8 +74,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 1312387143, guid: e4f09f00a641f764197cbc8305c53a62, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: -3140471691135001357, guid: 1d7a6c4feb89ca545ab7148e659bb42e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,7 +100,6 @@ GameObject:
   - component: {fileID: 6135535555287893061}
   - component: {fileID: 1061572805}
   - component: {fileID: 1061572811}
-  - component: {fileID: 446487419989072175}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -235,7 +234,7 @@ MonoBehaviour:
   _playerStartPos: {x: 0, y: 0}
   m_isLadder: 0
   m_isClimbing: 0
-  _anim: {fileID: 0}
+  _anim: {fileID: 1481311739985622106}
   m_isDrowning: 0
 --- !u!114 &1061572811
 MonoBehaviour:
@@ -264,36 +263,6 @@ MonoBehaviour:
     m_Bits: 256
   _groundCheckerBoxSize: {x: 1, y: 0.2}
   _groundCheckerCastDistance: 0.5
---- !u!114 &446487419989072175
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1481311739985622107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: c57c479fadd02564bb29e92b906f3aa1, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Pc
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!1 &7768024244910349351
 GameObject:
   m_ObjectHideFlags: 0

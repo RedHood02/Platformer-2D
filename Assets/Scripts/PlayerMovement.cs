@@ -14,6 +14,13 @@ public class PlayerMovement : MonoBehaviour
     public bool m_isMoving = false;
     private Vector3 _move;
 
+    [Header("Movement Counter")]
+    public float m_remainingJumps;
+    public float RemainingJumps => m_remainingJumps;
+    public float m_maxJumps;
+    public float m_remainingMoves;
+    public float m_maxMoves;
+
     [Header("Jump")]
     [SerializeField] private float _jumpForce = 10;
 
@@ -36,12 +43,23 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _playerInput = GetComponent<PlayerInput>();
+        _playerInput = GameObject.FindGameObjectWithTag("InputManager").GetComponent<PlayerInput>();
+
+        m_remainingJumps = m_maxJumps;
+        m_remainingMoves = m_maxMoves;
     }
 
     private void Update()
     {
-        _input = _playerInput.actions["Move"].ReadValue<Vector2>();
+        if (_isLadder)
+        {
+            _input = _playerInput.actions["LadderMove"].ReadValue<Vector2>();
+        }
+        else
+        {
+            _input = _playerInput.actions["GroundMove"].ReadValue<Vector2>();
+
+        }
         _isLadder = GetComponent<PlayerController>().m_isLadder;
         _isClimbing = GetComponent<PlayerController>().m_isClimbing;
 
@@ -53,8 +71,8 @@ public class PlayerMovement : MonoBehaviour
             GetComponent<PlayerController>().m_isClimbing = true;
         }
 
-        if (_playerInput.actions["Move"].IsInProgress() && GameplayManager.Instance.m_remainingMoves != 0) m_isMoving = true;
-        if (_playerInput.actions["Move"].WasReleasedThisFrame()) m_isMoving = false;
+        if (_playerInput.actions["GroundMove"].IsInProgress() && m_remainingMoves != 0) m_isMoving = true;
+        if (_playerInput.actions["GroundMove"].WasReleasedThisFrame()) m_isMoving = false;
     }
 
     private void FixedUpdate()
@@ -86,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 _sr.flipX = false;
             }
-            else
+            else if (_input.x < 0)
             {
                 _sr.flipX = true;
             }
@@ -96,17 +114,17 @@ public class PlayerMovement : MonoBehaviour
             _move = new Vector3(_input.x, _input.y);
         }
 
-        if (GameplayManager.Instance.m_remainingMoves != 0)
+        if (m_remainingMoves != 0)
         {
             transform.position += _walkSpeed * Time.deltaTime * _move;
-            if (_playerInput.actions["Move"].WasPressedThisFrame()) GameplayManager.Instance.m_remainingMoves--;
+            if (_playerInput.actions["GroundMove"].WasPressedThisFrame()) m_remainingMoves--;
         }
     }
 
     private bool CanMove()
     {
         bool canMove = true;
-        if (GameplayManager.Instance.m_remainingMoves <= 0) canMove = false;
+        if (m_remainingMoves <= 0) canMove = false;
         return canMove;
     }
 
@@ -117,14 +135,14 @@ public class PlayerMovement : MonoBehaviour
         if (_playerInput.actions["Jump"].WasPressedThisFrame() && IsGrounded())
         {
             _rb.AddForce(Vector3.up * _jumpForce, ForceMode2D.Impulse);
-            GameplayManager.Instance.m_remainingJumps--;
+            m_remainingJumps--;
         }
     }
 
     public bool CanJump()
     {
         bool canJump = true;
-        if (GameplayManager.Instance.m_remainingJumps <= 0) canJump = false;
+        if (m_remainingJumps <= 0) canJump = false;
         return canJump;
     }
 
